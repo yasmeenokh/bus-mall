@@ -39,76 +39,93 @@ let thirdIndex = 0;
 const clickCounter = 25;
 
 
-function wierdItems(name) {
+function WierdItems(name) {
     this.name = name.split('.')[0];
     this.image = `img/${name}`;
     this.clicks = 0;
     this.shown = 0;
-    wierdItems.all.push(this);
+    WierdItems.all.push(this);
 };
-wierdItems.all = [];
-wierdItems.counter = 0;
+WierdItems.all = [];
+WierdItems.counter = 0;
+
+
 
 for (let i = 0; i < imgArray.length; i++) {
-    new wierdItems(imgArray[i]);
+    new WierdItems(imgArray[i]);
 };
+
+let nextShown = [];
 function addWierdItems() {
     document.getElementById('button1').style.visibility = 'hidden';
-    let first = randomNumber(0, wierdItems.all.length - 1);
-    firstImage.src = wierdItems.all[first].image;
-    firstImage.alt = wierdItems.all[first].name;
-    firstIndex = first;
+    let previouslyShown = nextShown;
+    do {
+        let temp = [];
+        nextShown = temp;
+        let first = randomNumber(0, WierdItems.all.length - 1);
+        firstImage.src = WierdItems.all[first].image;
+        firstImage.alt = WierdItems.all[first].name;
+        firstIndex = first;
 
-    let second; do { second = randomNumber(0, wierdItems.all.length - 1); }
-    while (first == second);
-    secondImage.src = wierdItems.all[second].image;
-    secondImage.alt = wierdItems.all[second].name;
-    secondIndex = second;
+        let second; do { second = randomNumber(0, WierdItems.all.length - 1); }
+        while (first == second);
+        secondImage.src = WierdItems.all[second].image;
+        secondImage.alt = WierdItems.all[second].name;
+        secondIndex = second;
 
-    let third; do { third = randomNumber(0, wierdItems.all.length - 1); }
-    while (first == third || second == third);
-    thirdImage.src = wierdItems.all[third].image;
-    thirdImage.alt = wierdItems.all[third].name;
-    thirdIndex = third;
+        let third; do { third = randomNumber(0, WierdItems.all.length - 1); }
+        while (first == third || second == third);
+        thirdImage.src = WierdItems.all[third].image;
+        thirdImage.alt = WierdItems.all[third].name;
+        thirdIndex = third;
 
-    wierdItems.all[firstIndex].shown++;
-    wierdItems.all[secondIndex].shown++;
-    wierdItems.all[thirdIndex].shown++;
+        WierdItems.all[firstIndex].shown++;
+        WierdItems.all[secondIndex].shown++;
+        WierdItems.all[thirdIndex].shown++;
+        nextShown.push(first, second, third);
+    }
+    while (nextShown.includes(previouslyShown[0]) || nextShown.includes(previouslyShown[1]) || nextShown.includes(previouslyShown[2])
+    );
+
+
+
+
 };
 
 imageSection.addEventListener('click', handelClick);
 
 function handelClick(event) {
-    if (wierdItems.counter < clickCounter) {
+    if (WierdItems.counter < clickCounter) {
         const clicked = event.target;
         if (clicked.id === 'firstImage' || clicked.id === 'secondImage' || clicked.id === 'thirdImage') {
             if (clicked.id === 'firstImage') {
-                wierdItems.all[firstIndex].clicks++
+                WierdItems.all[firstIndex].clicks++
             }
             if (clicked.id === 'secondImage') {
-                wierdItems.all[secondIndex].clicks++
+                WierdItems.all[secondIndex].clicks++
             }
             if (clicked.id === 'thirdImage') {
-                wierdItems.all[thirdIndex].clicks++
+                WierdItems.all[thirdIndex].clicks++
             }
-            wierdItems.counter++
+            WierdItems.counter++
             addWierdItems();
-            console.log(wierdItems.all);
+            console.log(WierdItems.all);
 
         }
-
     }
     else {
+        // chartElement();
         showButton();
-    }
-}
-console.log(wierdItems.all);
+        imageSection.removeEventListener('click', handelClick);
 
-addWierdItems();
+    }
+
+}
+console.log(WierdItems.all);
 
 function showButton() {
     document.getElementById('button1').style.visibility = 'visible';
-}
+};
 
 let results = function () {
     const data = document.getElementById('data');
@@ -118,9 +135,58 @@ let results = function () {
     for (let i = 0; i < imgArray.length; i++) {
         const items = document.createElement('li');
         dataList.appendChild(items);
-        items.textContent = `${wierdItems.all[i].name}; Cliked at:${wierdItems.all[i].clicks}; viewd:${wierdItems.all[i].shown}`;
-    }
+        items.textContent = `${WierdItems.all[i].name}; Cliked at:${WierdItems.all[i].clicks}; viewd:${WierdItems.all[i].shown}`;
+    };
 };
 
+addWierdItems();
+
+
+
+function chartElement() {
+
+    let nameArray = [];
+    let clicksArray = [];
+    let viewsArray = [];
+
+    for (let i = 0; i < WierdItems.all.length; i++) {
+        nameArray.push(WierdItems.all[i].name);
+        clicksArray.push(WierdItems.all[i].clicks);
+        viewsArray.push(WierdItems.all[i].shown);
+    }
+    let ctx = document.getElementById('myChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: nameArray,
+            datasets: [
+                {
+                    label: '# of Votes',
+                    data: clicksArray,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2
+                },
+                {
+                    label: '# of views',
+                    data: viewsArray,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2
+                },
+
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+}
 addWierdItems();
 
