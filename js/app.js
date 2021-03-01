@@ -1,25 +1,25 @@
 'use strict';
 let imgArray = [
-    'bag',
-    'banana',
-    'bathroom',
-    'boots',
-    'breakfast',
-    'bubblegum',
-    'chair',
-    'cthulhu',
-    'dog-duck',
-    'dragon',
-    'pen',
-    'pet-sweep',
-    'scissors',
-    'shark',
-    'sweep',
-    'tauntaun',
-    'unicorn',
-    'usb',
-    'water-can',
-    'wine-glass'
+    'bag.jpg',
+    'banana.jpg',
+    'bathroom.jpg',
+    'boots.jpg',
+    'breakfast.jpg',
+    'bubblegum.jpg',
+    'chair.jpg',
+    'cthulhu.jpg',
+    'dog-duck.jpg',
+    'dragon.jpg',
+    'pen.jpg',
+    'pet-sweep.jpg',
+    'scissors.jpg',
+    'shark.jpg',
+    'sweep.png',
+    'tauntaun.jpg',
+    'unicorn.jpg',
+    'usb.gif',
+    'water-can.jpg',
+    'wine-glass.jpg'
 ];
 
 
@@ -39,19 +39,21 @@ let thirdIndex = 0;
 const clickCounter = 25;
 
 
-function wierdItems(name, image) {
-    this.name = name;
-    this.image = `./img/${name}.jpg` || `./img/${name}.gif` || `./img/${name}.png`;
+function wierdItems(name) {
+    this.name = name.split('.')[0];
+    this.image = `img/${name}`;
     this.clicks = 0;
     this.shown = 0;
     wierdItems.all.push(this);
 };
 wierdItems.all = [];
 wierdItems.counter = 0;
+
 for (let i = 0; i < imgArray.length; i++) {
     new wierdItems(imgArray[i]);
 };
 function addWierdItems() {
+    document.getElementById('button1').style.visibility = 'hidden';
     let first = randomNumber(0, wierdItems.all.length - 1);
     firstImage.src = wierdItems.all[first].image;
     firstImage.alt = wierdItems.all[first].name;
@@ -74,43 +76,51 @@ function addWierdItems() {
     wierdItems.all[thirdIndex].shown++;
 };
 
+imageSection.addEventListener('click', handelClick);
+
 function handelClick(event) {
-    if (wierdItems.counter <= clickCounter) {
+    if (wierdItems.counter < clickCounter) {
         const clicked = event.target;
-        if (clicked.Id == 'firstImage' || clicked.Id == 'secondImage' || clicked.Id == 'thirdImage') {
-            if (clicked.id == 'firstImage') {
+        if (clicked.id === 'firstImage' || clicked.id === 'secondImage' || clicked.id === 'thirdImage') {
+            if (clicked.id === 'firstImage') {
                 wierdItems.all[firstIndex].clicks++
             }
-            if (clicked.id == 'secondImage') {
+            if (clicked.id === 'secondImage') {
                 wierdItems.all[secondIndex].clicks++
             }
-            if (clicked.id == 'thirdImage') {
+            if (clicked.id === 'thirdImage') {
                 wierdItems.all[thirdIndex].clicks++
             }
             wierdItems.counter++
             addWierdItems();
             console.log(wierdItems.all);
+
         }
+
+    }
+    else {
+        showButton();
     }
 }
-imageSection.addEventListener('click', handelClick);
 console.log(wierdItems.all);
 
 addWierdItems();
 
+function showButton() {
+    document.getElementById('button1').style.visibility = 'visible';
+}
 
-wierdItems.prototype.results = function () {
+let results = function () {
     const data = document.getElementById('data');
     const dataList = document.createElement('ul');
     data.appendChild(dataList);
 
     for (let i = 0; i < imgArray.length; i++) {
         const items = document.createElement('li');
-        dataList.appendChild(item);
-        items.textContent = wierdItems.all[i];
+        dataList.appendChild(items);
+        items.textContent = `${wierdItems.all[i].name}; Cliked at:${wierdItems.all[i].clicks}; viewd:${wierdItems.all[i].shown}`;
     }
 };
 
-
-
+addWierdItems();
 
