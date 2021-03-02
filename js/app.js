@@ -22,11 +22,11 @@ let imgArray = [
     'wine-glass.jpg'
 ];
 
-
+// helper function // 
 function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
+// calling the elements from the html file// 
 const imageSection = document.getElementById('imageSection');
 const firstImage = document.getElementById('firstImage');
 const secondImage = document.getElementById('secondImage');
@@ -38,7 +38,7 @@ let secondIndex = 0;
 let thirdIndex = 0;
 const clickCounter = 25;
 
-
+// creating the constructor //
 function WierdItems(name) {
     this.name = name.split('.')[0];
     this.image = `img/${name}`;
@@ -54,10 +54,10 @@ WierdItems.counter = 0;
 for (let i = 0; i < imgArray.length; i++) {
     new WierdItems(imgArray[i]);
 };
-
+// function to show each image different than the other one //
 let nextShown = [];
 function addWierdItems() {
-    WierdItems.innerHTML ='';
+    WierdItems.innerHTML = '';
     document.getElementById('button1').style.visibility = 'hidden';
     let previouslyShown = nextShown;
     do {
@@ -93,7 +93,7 @@ function addWierdItems() {
 
 imageSection.addEventListener('click', handelClick);
 
-
+// rendering the data// 
 function handelClick(event) {
     if (WierdItems.counter < clickCounter) {
         const clicked = event.target;
@@ -114,6 +114,7 @@ function handelClick(event) {
         }
     }
     else {
+        // adding a local storage // 
         localStorage.setItem('WierdItems', JSON.stringify(WierdItems.all));
 
         showButton();
@@ -121,7 +122,7 @@ function handelClick(event) {
 
 
 
-}
+    }
 
 }
 console.log(WierdItems.all);
@@ -131,6 +132,7 @@ function showButton() {
     document.getElementById('button1').style.visibility = 'visible';
 };
 
+// function to creat the data list //
 let results = function () {
     const data = document.getElementById('data');
     const dataList = document.createElement('ul');
@@ -145,7 +147,7 @@ let results = function () {
 
 addWierdItems();
 
-
+// creating a chart for clicks and views data //
 function chartElement() {
 
     let nameArray = [];
@@ -190,13 +192,14 @@ function chartElement() {
         }
     });
 }
-function getData(){
+
+function getData() {
     const data = localStorage.getItem('WierdItems');
-    if (data){
-    const dataObject = JSON.parse(data);
-    WierdItems.all= dataObject;
-    addWierdItems();
-}
+    if (data) {
+        const dataObject = JSON.parse(data);
+        WierdItems.all = dataObject;
+        addWierdItems();
+    }
 };
 getData();
 addWierdItems();
