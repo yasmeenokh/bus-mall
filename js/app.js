@@ -114,7 +114,6 @@ function handelClick(event) {
         }
     }
     else {
-        // chartElement();
         showButton();
         imageSection.removeEventListener('click', handelClick);
 

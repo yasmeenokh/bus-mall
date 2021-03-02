@@ -11,20 +11,20 @@ body {
     background-image: url(../img/background_1.jpg) ;
 }
 header {
-    display: grid;
+    /* display: grid; */
     align-items: center;
     margin: 10px;
     color:#03506f ;
     font-size: large;
 }
-.container {
+/* .container {
     display: grid;
     grid-template-rows: 100px minmax(calc(100vh - 170px) , 1fr, 1fr) 50px;
     gap: 10px;
     text-align: center;
     clear: both;
 
-}
+} */
 h2{
     margin: 10px;
     color:#03506f ;
@@ -69,10 +69,17 @@ footer p {
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color: #03506f;
     margin-top: 100px;
-    width: 400px;
+    column-count: 2;
+
+    
 }
 #data ul li{
+    font-size: medium;
     margin-bottom: 10px;
+    text-align: justify;
+    text-justify: inter-word;
+    padding-left: 20px;
+    
 
 }
 
