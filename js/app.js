@@ -163,7 +163,7 @@ function chartElement() {
                 {
                     label: '# of Votes',
                     data: clicksArray,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    backgroundColor: '(255, 206, 86, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 2
                 },
