@@ -57,6 +57,7 @@ for (let i = 0; i < imgArray.length; i++) {
 
 let nextShown = [];
 function addWierdItems() {
+    WierdItems.innerHTML ='';
     document.getElementById('button1').style.visibility = 'hidden';
     let previouslyShown = nextShown;
     do {
@@ -87,12 +88,11 @@ function addWierdItems() {
     while (nextShown.includes(previouslyShown[0]) || nextShown.includes(previouslyShown[1]) || nextShown.includes(previouslyShown[2])
     );
 
-
-
-
 };
 
+
 imageSection.addEventListener('click', handelClick);
+
 
 function handelClick(event) {
     if (WierdItems.counter < clickCounter) {
@@ -114,13 +114,18 @@ function handelClick(event) {
         }
     }
     else {
+        localStorage.setItem('WierdItems', JSON.stringify(WierdItems.all));
+
         showButton();
         imageSection.removeEventListener('click', handelClick);
 
-    }
+
+
+}
 
 }
 console.log(WierdItems.all);
+
 
 function showButton() {
     document.getElementById('button1').style.visibility = 'visible';
@@ -139,7 +144,6 @@ let results = function () {
 };
 
 addWierdItems();
-
 
 
 function chartElement() {
@@ -162,7 +166,6 @@ function chartElement() {
                 {
                     label: '# of Votes',
                     data: clicksArray,
-                    backgroundColor: '(255, 206, 86, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 2
                 },
@@ -187,5 +190,14 @@ function chartElement() {
         }
     });
 }
+function getData(){
+    const data = localStorage.getItem('WierdItems');
+    if (data){
+    const dataObject = JSON.parse(data);
+    WierdItems.all= dataObject;
+    addWierdItems();
+}
+};
+getData();
 addWierdItems();
 
